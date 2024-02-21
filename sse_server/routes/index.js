@@ -2,9 +2,11 @@ const router = require('koa-router')()
 const { PassThrough } = require("stream");
 
 router.get('/', async (ctx, next) => {  
+  /**配置 HTTP 相关请求方式 */
   ctx.request.socket.setTimeout(0);  
   ctx.req.socket.setNoDelay(true);  
-  ctx.req.socket.setKeepAlive(true);  
+  ctx.req.socket.setKeepAlive(true); 
+  /**设置 SSE 请求头 */
   ctx.set({  
     "Content-Type": "text/event-stream",  
     "Cache-Control": "no-cache",  
@@ -16,7 +18,7 @@ router.get('/', async (ctx, next) => {
   ctx.status = 200;  
   ctx.body = stream;  
   
-  const content = "SSE是一种基于 HTTP 的服务器推送技术，它允许服务器向客户端推送数据。SSE 使用一个单向的连接来传输数据，而不是使用 HTTP 请求/响应模型。这意味着 SSE 连接一旦建立，服务器就可以向客户端推送数据，而客户端无法主动发起请求。";  
+  const content = "简单总结 SSE是基于 HTTP 协议的服务端推送技术，其中并不是传统意义上的 HTTP 请求 / 响应模型，SSE 可保持一次请求长久连接，但也不是 WebSockets 双工通信模型；SSE 只是支持服务端主动推送到客户端，可以理解成 单项长连接；";  
   
   // 将内容分割成多个事件消息  
   const messages = content.split(''); // 每个字符作为一个消息  
